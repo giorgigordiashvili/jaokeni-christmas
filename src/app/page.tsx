@@ -8,8 +8,8 @@ export default function Home() {
     <Box style={{}}>
       <Header></Header>
       <GiftContainer />
-      <ResponsiveAccordion title="ხშირად დასმული კითხვები" children="test" />
-      <ResponsiveAccordion title="ხშირად დასმული კითხვები" children="test" />
+      <ResponsiveAccordion title="ხშირად დასმული კითხვები" answer="test" />
+      <ResponsiveAccordion title="ხშირად დასმული კითხვები" answer="test" />
     </Box>
   )
 }

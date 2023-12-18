@@ -9,7 +9,11 @@ import {
   useTheme
 } from '@mui/material'
 
-const ResponsiveAccordion = ({ title, children }) => {
+type Props = {
+  title: string
+  answer: string
+}
+const ResponsiveAccordion = ({ title, answer }: Props) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
@@ -51,7 +55,7 @@ const ResponsiveAccordion = ({ title, children }) => {
         <Typography sx={titleStyle}>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails>
-        <Typography sx={answerStyle}>{children}</Typography>
+        <Typography sx={answerStyle}>{answer}</Typography>
       </AccordionDetails>
     </Accordion>
   )
