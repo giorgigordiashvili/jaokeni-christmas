@@ -14,7 +14,7 @@ import { useState } from 'react'
 import PromoModal from '../Modal/PromoModal'
 
 const GiftContainer: React.FC = () => {
-  const [selectedPromo, setSelectedPromo] = useState(null)
+  const [selectedPromo, setSelectedPromo] = useState<null | number>(null)
   const [modalOpen, setModalOpen] = useState(true)
 
   const [selectedGifts, setSelectedGifts] = useState<number[]>([])
