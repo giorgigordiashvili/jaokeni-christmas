@@ -15,7 +15,7 @@ import PromoModal from '../Modal/PromoModal'
 
 const GiftContainer: React.FC = () => {
   const [selectedPromo, setSelectedPromo] = useState<null | number>(null)
-  const [modalOpen, setModalOpen] = useState(true)
+  const [modalOpen, setModalOpen] = useState(false)
 
   const [selectedGifts, setSelectedGifts] = useState<number[]>([])
   const theme = useTheme()
