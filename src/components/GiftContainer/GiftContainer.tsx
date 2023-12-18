@@ -43,6 +43,8 @@ const GiftContainer: React.FC = () => {
         alignItems: 'center',
         flexDirection: 'column',
         backgroundImage: 'url(./giftbg.png)',
+        backgroundPosition: 'center',
+        backgroundSize: 'cover',
         paddingBottom: '140px'
       }}
     >
@@ -89,6 +91,10 @@ const GiftContainer: React.FC = () => {
               onClick={() => handleSelectGift(giftId)}
               style={{
                 position: 'relative',
+                filter:
+                  selectedGifts.length >= 3 && !isGiftSelected(giftId)
+                    ? 'blur(4px)'
+                    : 'none',
                 opacity:
                   selectedGifts.length >= 3 && !isGiftSelected(giftId)
                     ? 0.3

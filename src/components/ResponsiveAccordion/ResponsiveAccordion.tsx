@@ -46,15 +46,23 @@ const ResponsiveAccordion = ({ title, answer }: Props) => {
   }
 
   return (
-    <Accordion disableGutters elevation={0} sx={{ background: '#103B5E' }}>
+    <Accordion
+      disableGutters
+      elevation={0}
+      sx={{
+        background: '#103B5E',
+        borderBottom: '1px solid rgba(255,255,255,0.11)'
+      }}
+    >
       <AccordionSummary
+        sx={{ padding: 0 }}
         expandIcon={<AddIcon color="secondary" />}
         aria-controls="panel-content"
         id="panel-header"
       >
         <Typography sx={titleStyle}>{title}</Typography>
       </AccordionSummary>
-      <AccordionDetails>
+      <AccordionDetails sx={{ padding: 0, marginBottom: '24px' }}>
         <Typography sx={answerStyle}>{answer}</Typography>
       </AccordionDetails>
     </Accordion>
