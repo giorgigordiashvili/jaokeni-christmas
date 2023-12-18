@@ -147,7 +147,7 @@ const GiftContainer: React.FC = () => {
               >
                 {isGiftSelected(giftId) ? (
                   <Image
-                    src="/testgift.jpeg"
+                    src="/testgift.png"
                     layout="fill"
                     alt="gift"
                     style={{
