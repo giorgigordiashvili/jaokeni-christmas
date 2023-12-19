@@ -8,6 +8,7 @@ const nextConfig = {
     }
   },
   images: {
+    domains: ['207.154.192.95'],
     remotePatterns: [
       {
         protocol: 'https',

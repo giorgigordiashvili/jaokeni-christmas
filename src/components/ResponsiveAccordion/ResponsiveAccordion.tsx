@@ -63,7 +63,12 @@ const ResponsiveAccordion = ({ title, answer }: Props) => {
         <Typography sx={titleStyle}>{title}</Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 0, marginBottom: '24px' }}>
-        <Typography sx={answerStyle}>{answer}</Typography>
+        <Typography
+          sx={answerStyle}
+          dangerouslySetInnerHTML={{
+            __html: answer
+          }}
+        />
       </AccordionDetails>
     </Accordion>
   )

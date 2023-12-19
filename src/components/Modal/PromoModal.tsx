@@ -50,8 +50,7 @@ const PromoModal: React.FC<PromoModalProps> = ({ open, onClose }) => {
         sx={{
           ...modalStyle,
           width: { sx: 'calc(100vw - 32px)', md: '584px' },
-          borderRadius: '10px',
-          minHeight: '320px'
+          borderRadius: '10px'
         }}
       >
         {!submitted ? (
@@ -91,12 +90,12 @@ const PromoModal: React.FC<PromoModalProps> = ({ open, onClose }) => {
             <Typography
               variant="h6"
               component="h2"
-              style={{ marginBottom: 16 }}
+              style={{ marginBottom: 16, textAlign: 'center' }}
             >
               ვაუჩერის კოდი
             </Typography>
             <Typography variant="h5" component="h3">
-              {promoCode}
+              123456
             </Typography>
           </>
         )}
