@@ -1,7 +1,8 @@
 import { createTheme } from '@mui/material/styles'
-import { Roboto } from 'next/font/google'
+import { Noto_Sans_Georgian } from 'next/font/google'
+import { GlobalStyle } from './GlobalStyle'
 
-const roboto = Roboto({
+const notoSans = Noto_Sans_Georgian({
   weight: ['300', '400', '500', '700'],
   subsets: ['latin'],
   display: 'swap'
@@ -16,24 +17,25 @@ const theme = createTheme({
   },
 
   typography: {
-    fontFamily: roboto.style.fontFamily,
+    h2: {
+      fontWeight: '700'
+    },
     h1: {
       color: 'var(--Primary, #00162C)',
       textAlign: 'center',
-      fontFamily: 'Helvetica Neue',
       fontSize: '50px',
       fontStyle: 'normal',
-      fontWeight: 700,
+      fontWeight: '700',
       lineHeight: 'normal',
-      textTransform: 'uppercase'
+      textTransform: 'uppercase',
+      letterSpacing: 1.1
     },
     subtitle1: {
       color: 'var(--Secondary, #002945)',
       textAlign: 'center',
-      fontFamily: 'Helvetica Neue',
       fontSize: '16px',
       fontStyle: 'normal',
-      fontWeight: 500,
+      fontWeight: '650',
       lineHeight: '20px' // 125%
     }
   },
@@ -48,6 +50,9 @@ const theme = createTheme({
     }
   },
   components: {
+    MuiCssBaseline: {
+      styleOverrides: GlobalStyle
+    },
     MuiButton: {
       styleOverrides: {
         root: {

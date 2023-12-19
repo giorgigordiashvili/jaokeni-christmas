@@ -37,12 +37,17 @@ const GiftContainer: React.FC = () => {
     <Box
       textAlign="center"
       p={2}
+      sx={{
+        backgroundImage: {
+          xs: 'url(./giftbg-mobile.png)',
+          md: 'url(./giftbg-desktop.png)'
+        }
+      }}
       style={{
         backgroundColor: 'white',
         display: 'flex',
         alignItems: 'center',
         flexDirection: 'column',
-        backgroundImage: 'url(./giftbg.png)',
         backgroundPosition: 'center',
         backgroundSize: 'cover',
         paddingBottom: '140px'
@@ -148,20 +153,31 @@ const GiftContainer: React.FC = () => {
               <CardActionArea
                 style={{
                   height: '100%',
-                  position: 'relative'
+                  position: 'relative',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center'
                 }}
               >
                 {isGiftSelected(giftId) ? (
-                  <Image
-                    src="/testgift.png"
-                    layout="fill"
-                    alt="gift"
-                    style={{
-                      transform: isGiftSelected(giftId)
-                        ? 'rotateY(180deg)'
-                        : 'rotateY(0deg)'
+                  <Box
+                    sx={{
+                      position: 'relative',
+                      width: { xs: '76px', md: '98px' },
+                      height: { xs: '76px', md: '98px' }
                     }}
-                  />
+                  >
+                    <Image
+                      src="/testgift.png"
+                      layout="fill"
+                      alt="gift"
+                      style={{
+                        transform: isGiftSelected(giftId)
+                          ? 'rotateY(180deg)'
+                          : 'rotateY(0deg)'
+                      }}
+                    />
+                  </Box>
                 ) : (
                   <Image src="/gift.png" layout="fill" alt="gift" />
                 )}

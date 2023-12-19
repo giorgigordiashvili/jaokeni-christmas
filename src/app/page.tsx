@@ -15,7 +15,11 @@ export default function Home() {
           backgroundColor: '#103B5E'
         }}
       >
-        <Typography variant="h2" color="white">
+        <Typography
+          sx={{ fontSize: { xs: 20, md: 30 } }}
+          variant="h2"
+          color="white"
+        >
           ხშირად დასმული კითხვები
         </Typography>
         <Box sx={{ marginTop: { xs: '36px', md: '80px' } }}>
