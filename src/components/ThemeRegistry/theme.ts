@@ -92,15 +92,31 @@ const theme = createTheme({
     MuiCard: {
       styleOverrides: {
         root: {
-          width: '130px',
-          height: '130px',
+          width: '180px',
+          height: '180px',
           background: 'transparent',
 
           // Styles for mobile screens
           ['@media (max-width:900px)']: {
             // Applying styles for screens smaller than 600px
-            width: '98px',
-            height: '98px'
+            width: '140px',
+            height: '140px'
+          },
+
+          ['@media (max-width:420px)']: {
+            // Applying styles for screens smaller than 600px
+            width: '120px',
+            height: '120px'
+          },
+          ['@media (max-width:360px)']: {
+            // Applying styles for screens smaller than 600px
+            width: '100px',
+            height: '100px'
+          },
+          ['@media (max-width:300px)']: {
+            // Applying styles for screens smaller than 600px
+            width: '80px',
+            height: '80px'
           }
         }
       }

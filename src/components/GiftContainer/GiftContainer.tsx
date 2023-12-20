@@ -204,12 +204,12 @@ const GiftContainer = ({ data }: Props) => {
           },
           maxWidth: {
             xs: '100%',
-            md: '426px'
+            md: '700px'
           }
         }}
       >
         {shuffledData.map((gift) => (
-          <Grid item key={gift.id}>
+          <Grid xs={4} item key={gift.id}>
             <Card
               onClick={() => handleSelectGift(gift.id)}
               style={{
@@ -282,8 +282,8 @@ const GiftContainer = ({ data }: Props) => {
                   <Box
                     sx={{
                       position: 'relative',
-                      width: { xs: '90px', md: '98px' },
-                      height: { xs: '90px', md: '98px' }
+                      width: { xs: '100%', md: '100%' },
+                      height: { xs: '100%', md: '100%' }
                     }}
                   >
                     <img
