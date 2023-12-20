@@ -10,8 +10,9 @@ import {
 } from '@mui/material'
 import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
+import html2canvas from 'html2canvas'
 import Image from 'next/image'
-import React, { useState } from 'react'
+import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
 
 interface FormValues {
@@ -37,9 +38,25 @@ const PromoModal: React.FC<PromoModalProps> = ({
   onClose,
   selectedPromo
 }) => {
+  const modalRef = useRef(null)
+
   const [couponCode, setCouponCode] = useState<string>('')
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
+
+  const takeScreenshot = () => {
+    if (modalRef.current) {
+      console.log(modalRef.current)
+      html2canvas(modalRef.current).then((canvas) => {
+        // Rest of your code remains the same
+        const image = canvas.toDataURL('image/png', 1.0)
+        let downloadLink = document.createElement('a')
+        downloadLink.href = image
+        downloadLink.download = 'screenshot.png'
+        downloadLink.click()
+      })
+    }
+  }
 
   const promoValidationSchema = Yup.object().shape({
     firstName: Yup.string().required('სახელი შეყვანა სავალდებულოა'),
@@ -90,11 +107,11 @@ const PromoModal: React.FC<PromoModalProps> = ({
     alignItems: 'center'
   }
   return (
-    <Modal open={open} onClose={onClose}>
+    <Modal ref={modalRef} open={open} onClose={onClose}>
       <Box
         sx={{
           ...modalStyle,
-          width: { sx: 'calc(100vw - 32px)', md: '584px' },
+          width: { xs: 'calc(100vw - 32px)', md: '584px' },
           borderRadius: '10px'
         }}
       >
@@ -104,11 +121,26 @@ const PromoModal: React.FC<PromoModalProps> = ({
           width={isMobile ? 180 : 220}
           height={isMobile ? 180 : 220}
         />
-
-        <Typography textAlign="center" variant="h6" fontWeight={'650'}>
-          {selectedPromo?.title}
+        {couponCode?.length ? (
+          <Typography
+            style={{ marginBottom: '8px' }}
+            textAlign="center"
+            variant="h4"
+            fontWeight={'650'}
+          >
+            გილოცავთ!
+          </Typography>
+        ) : null}
+        <Typography
+          style={{ marginBottom: '8px' }}
+          textAlign="center"
+          variant="h6"
+          fontWeight={'650'}
+        >
+          {couponCode?.length
+            ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
+            : selectedPromo?.title}
         </Typography>
-        <Typography textAlign="center">{selectedPromo?.description}</Typography>
         {!couponCode?.length ? (
           <Formik
             initialValues={initialValues}
@@ -168,12 +200,12 @@ const PromoModal: React.FC<PromoModalProps> = ({
           <>
             <Typography variant="h4">{couponCode}</Typography>
             <Button
-              onClick={onClose}
+              onClick={takeScreenshot}
               variant="contained"
               color="primary"
               style={{ marginTop: 16, alignSelf: 'center' }}
             >
-              დახურვა
+              შენახვა
             </Button>
           </>
         )}

@@ -116,17 +116,51 @@ const GiftContainer = ({ data }: Props) => {
         paddingBottom: '140px'
       }}
     >
-      <Typography
-        variant="h1"
-        sx={{
-          marginTop: {
-            xs: '16px',
-            md: '40px'
-          }
-        }}
-      >
-        საჩუქრების ჯაოკენი
-      </Typography>
+      {selectedGifts.length === 3 ? (
+        <>
+          <Typography
+            variant="h1"
+            sx={{
+              marginTop: {
+                xs: '16px',
+                md: '40px'
+              }
+            }}
+          >
+            აირჩიე
+          </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              marginTop: 0
+            }}
+          >
+            ერთ-ერთი
+          </Typography>
+        </>
+      ) : (
+        <>
+          <Typography
+            variant="h1"
+            sx={{
+              marginTop: {
+                xs: '16px',
+                md: '40px'
+              }
+            }}
+          >
+            საახალწლო
+          </Typography>
+          <Typography
+            variant="h1"
+            sx={{
+              marginTop: 0
+            }}
+          >
+            საჩუქრები ყველასთვის
+          </Typography>
+        </>
+      )}
 
       {selectedPromo ? (
         <>
@@ -154,7 +188,7 @@ const GiftContainer = ({ data }: Props) => {
             {data.find((it) => it.id === selectedPromo)?.title}
           </Typography>
         </>
-      ) : (
+      ) : selectedGifts.length < 3 ? (
         <Typography
           variant="subtitle1"
           sx={{
@@ -164,14 +198,11 @@ const GiftContainer = ({ data }: Props) => {
             }
           }}
         >
-          {selectedGifts.length >= 3
-            ? 'აირჩიეთ 3 საჩუქრიდან ერთერთი'
-            : 'გახსენით 3 ჯაოკენის ყუთი'}
+          გახსენით ჯაოკენის 3 ყუთი
         </Typography>
-      )}
+      ) : null}
       <Grid
         container
-        spacing={2}
         justifyContent="center"
         alignItems="center"
         sx={{
@@ -179,7 +210,10 @@ const GiftContainer = ({ data }: Props) => {
             xs: '32px',
             md: '40px'
           },
-          maxWidth: '426px'
+          maxWidth: {
+            xs: '100%',
+            md: '426px'
+          }
         }}
       >
         {shuffledData.map((gift) => (
@@ -256,8 +290,8 @@ const GiftContainer = ({ data }: Props) => {
                   <Box
                     sx={{
                       position: 'relative',
-                      width: { xs: '76px', md: '98px' },
-                      height: { xs: '76px', md: '98px' }
+                      width: { xs: '90px', md: '98px' },
+                      height: { xs: '90px', md: '98px' }
                     }}
                   >
                     <img
