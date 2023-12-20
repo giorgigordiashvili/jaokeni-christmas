@@ -1,7 +1,10 @@
+import { FacebookPixelEvents } from '@/components/Pixel'
 import CustomSnowfall from '@/components/Snowfall/Snowfall'
 import ThemeRegistry from '@/components/ThemeRegistry/ThemeRegistry'
 import type { Metadata } from 'next'
 import LocalFont from 'next/font/local'
+import { Suspense } from 'react'
+
 import './globals.css'
 
 const helvetica = LocalFont({
@@ -68,6 +71,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={helvetica.variable}>
+        <Suspense fallback={null}>
+          <FacebookPixelEvents />
+        </Suspense>
         <CustomSnowfall />
         <ThemeRegistry>{children}</ThemeRegistry>
       </body>

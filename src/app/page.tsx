@@ -5,6 +5,8 @@ import ResponsiveAccordion from '@/components/ResponsiveAccordion/ResponsiveAcco
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
 
+export const revalidate = 60
+
 export default async function Home() {
   const { data } = await fetchGifts()
   const { data: faqData } = await fetchFAQs()
