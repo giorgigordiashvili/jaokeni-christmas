@@ -18,7 +18,7 @@ export const GlobalStyle = `
 body {
   font-family: var(--helvetica) !important;
   width:100%;
-
+ 
 }
 
 

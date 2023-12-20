@@ -44,6 +44,9 @@ const GiftContainer = ({ data }: Props) => {
   }
 
   const handleSelectGift = (giftId: number) => {
+    if (selectedGifts.length === 2 && !selectedPromo) {
+      setSelectedPromo(7)
+    }
     // Check if no gifts have been selected yet
     if (selectedGifts.length === 0) {
       swapGifts(giftId)
@@ -165,17 +168,6 @@ const GiftContainer = ({ data }: Props) => {
       {selectedPromo ? (
         <>
           <Typography
-            variant="subtitle1"
-            sx={{
-              marginTop: {
-                xs: '8px',
-                md: '24px'
-              }
-            }}
-          >
-            თქვენ აირჩიეთ
-          </Typography>
-          <Typography
             fontWeight="750"
             variant="subtitle1"
             sx={{
@@ -217,7 +209,7 @@ const GiftContainer = ({ data }: Props) => {
         }}
       >
         {shuffledData.map((gift) => (
-          <Grid item key={gift.id} xs={4}>
+          <Grid item key={gift.id}>
             <Card
               onClick={() => handleSelectGift(gift.id)}
               style={{

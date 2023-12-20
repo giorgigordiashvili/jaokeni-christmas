@@ -38,6 +38,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
   onClose,
   selectedPromo
 }) => {
+  const [shareToFriend, setShareToFriend] = useState<boolean>(false)
   const modalRef = useRef(null)
 
   const [couponCode, setCouponCode] = useState<string>('')
@@ -58,6 +59,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
         downloadLink.href = image
         downloadLink.download = 'screenshot.png'
         downloadLink.click()
+        setShareToFriend(true)
       })
     }
   }
@@ -216,8 +218,23 @@ const PromoModal: React.FC<PromoModalProps> = ({
           )}
         </Box>
       </Modal>
-      <Box ref={modalRef}>
-        <img src={selectedPromo?.image} alt="Promo" width={220} height={220} />
+      <Box
+        ref={modalRef}
+        style={{
+          backgroundColor: 'yellow',
+          padding: 20,
+          position: 'absolute',
+          bottom: '1000px',
+          backgroundImage: 'url(/giftbg-mobile.png)'
+        }}
+      >
+        <img
+          src={`/${selectedPromo?.id}.png`}
+          alt="Promo"
+          width={440}
+          height={440}
+          style={{ objectFit: 'contain' }}
+        />
         {couponCode?.length ? (
           <Typography
             style={{ marginBottom: '8px' }}

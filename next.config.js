@@ -7,16 +7,9 @@ const nextConfig = {
       transform: '@mui/icons-material/{{member}}'
     }
   },
+
   images: {
-    domains: ['api.jaokeni.ge'],
-    remotePatterns: [
-      {
-        protocol: 'https',
-        hostname: 'source.unsplash.com',
-        port: '',
-        pathname: '/random'
-      }
-    ]
+    domains: ['api.jaokeni.ge']
   }
 }
 
