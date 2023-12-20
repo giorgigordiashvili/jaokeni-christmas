@@ -42,11 +42,14 @@ const PromoModal: React.FC<PromoModalProps> = ({
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const promoValidationSchema = Yup.object().shape({
-    firstName: Yup.string().required('სახელი is required'),
-    lastName: Yup.string().required('გვარი is required'),
+    firstName: Yup.string().required('სახელი შეყვანა სავალდებულოა'),
+    lastName: Yup.string().required('გვარის შეყვანა სავალდებულოა'),
     phoneNumber: Yup.string()
-      .matches(/^[0-9]+$/, 'ტელეფონის ნომერი must be a valid number')
-      .required('ტელეფონის ნომერი is required')
+      .matches(
+        /(^\+995\d{9}$)|(^\d{9}$)/,
+        'ტელეფონის ნომერი უნდა იყოს ვალიდური (503123456) ან (+995502123456'
+      )
+      .required('ტელეფონის ნომერის შეყვანა სავალდებულოა')
   })
 
   const handleSubmit = async (
