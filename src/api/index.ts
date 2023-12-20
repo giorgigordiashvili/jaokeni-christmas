@@ -24,12 +24,14 @@ export interface FAQResponse {
 // Function to fetch gifts data
 export const fetchGifts = async (): Promise<GiftsResponse> => {
   const { data } = await axios.get<GiftsResponse>(
-    'http://207.154.192.95/api/gifts'
+    'https://api.jaokeni.ge/api/gifts'
   )
   return data
 }
 
 export const fetchFAQs = async () => {
-  const { data } = await axios.get<FAQResponse>('http://207.154.192.95/api/faq')
+  const { data } = await axios.get<FAQResponse>(
+    'https://api.jaokeni.ge/api/faq'
+  )
   return data
 }

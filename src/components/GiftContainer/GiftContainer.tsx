@@ -1,4 +1,5 @@
 'use client'
+import { Gift } from '@/api'
 import {
   Box,
   Button,
@@ -9,71 +10,14 @@ import {
   useMediaQuery,
   useTheme
 } from '@mui/material'
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import PromoModal from '../Modal/PromoModal'
 const { default: NextImage } = require('next/image')
 
-const data = [
-  {
-    id: 7,
-    title: '20% ფასდაკლება სრულ ასორტიმენტზე',
-    description: 'გამოსაყენებლად წარმოადგინეთ პრომო კოდი ჯაოკენში',
-    image: 'http://207.154.192.95/storage/8/5.png'
-  },
-  {
-    id: 9,
-    title: '25% ფასდაკლება საღებავების კატეგორიაზე',
-    description: 'გამოსაყენებლად წარმოადგინეთ პრომო კოდი ჯაოკენში',
-    image: 'http://207.154.192.95/storage/10/7.png'
-  },
-  {
-    id: 11,
-    title: '10000 ლარს ზემოთ 10% ფასდაკლება + 1000 ლარიანი ვაუჩერი',
-    description: 'შეიძინე 10000 ლარზე მეტი ღირებულების პროდუქცია ჯაოკენში',
-    image: 'http://207.154.192.95/storage/12/9.png'
-  },
-  {
-    id: 3,
-    title: '10000 ლარს ზემოთ 10% ფასდაკლება + 1000 ლარიანი ვაუჩერი',
-    description: 'შეიძინე 10000 ლარზე მეტი ღირებულების პროდუქცია ჯაოკენში',
-    image: 'http://207.154.192.95/storage/3/1.png'
-  },
-  {
-    id: 5,
-    title: '3000 ლარს ზემოთ 15% ფასდაკლება + 200 ლარიანი ვაუჩერი',
-    description:
-      'გამოსაყენებლად შეიძინე 1000 ლარზე მეტი ღირებულების პროდუქცია ჯაოკენში',
-    image: 'http://207.154.192.95/storage/7/3.png'
-  },
-  {
-    id: 8,
-    title: '25% ფასდაკლება იტალიურ შპალერებზე',
-    description: 'გამოსაყენებლად წარმოადგინეთ პრომო კოდი ჯაოკენში',
-    image: 'http://207.154.192.95/storage/9/6.png'
-  },
-  {
-    id: 4,
-    title: '1000 ლარს ზემოთ 15% ფასდაკლება + 100 ლარიანი ვაუჩერი',
-    description:
-      'გამოსაყენებლად შეიძინე 1000 ლარზე მეტი ღირებულების პროდუქცია ჯაოკენში',
-    image: 'http://207.154.192.95/storage/4/2.png'
-  },
-  {
-    id: 10,
-    title: '20% ფასდაკლება აბაზანის აქსესუარებზე',
-    description: 'გამოსაყენებლად წარმოადგინეთ პრომო კოდი ჯაოკენში',
-    image: 'http://207.154.192.95/storage/11/8.png'
-  },
-  {
-    id: 6,
-    title: '5000 ლარს ზემოთ 10% ფასდაკლება + 500 ლარიანი ვაუჩერი',
-    description:
-      'გამოსაყენებლად შეიძინე 5000 ლარზე მეტი ღირებულების პროდუქცია ჯაოკენში',
-    image: 'http://207.154.192.95/storage/6/4.png'
-  }
-]
+type Props = { data: Gift[] }
+const GiftContainer = ({ data }: Props) => {
+  const [shuffledData, setShuffledData] = useState<Gift[]>([])
 
-const GiftContainer = () => {
   const [selectedPromo, setSelectedPromo] = useState<null | number>(null)
   const [modalOpen, setModalOpen] = useState(false)
 
@@ -81,15 +25,74 @@ const GiftContainer = () => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const handleSelectGift = (giftId: number) => {
-    if (selectedGifts.includes(giftId) || selectedGifts.length >= 3) {
-      if (selectedGifts.includes(giftId) && selectedGifts.length >= 3) {
-        setSelectedPromo(giftId)
-      }
-      return
-    }
-    setSelectedGifts([...selectedGifts, giftId])
+  const swapGifts = (clickedGiftId: number) => {
+    // Find the index of the gift with id 7
+    const id7Index = shuffledData.findIndex((gift) => gift.id === 7)
+    // Find the index of the clicked gift
+    const clickedIndex = shuffledData.findIndex(
+      (gift) => gift.id === clickedGiftId
+    )
+
+    // Swap the gifts
+    ;[shuffledData[id7Index], shuffledData[clickedIndex]] = [
+      shuffledData[clickedIndex],
+      shuffledData[id7Index]
+    ]
+
+    // Update the state with the new order
+    setShuffledData([...shuffledData])
   }
+
+  const handleSelectGift = (giftId: number) => {
+    // Check if no gifts have been selected yet
+    if (selectedGifts.length === 0) {
+      swapGifts(giftId)
+
+      setSelectedGifts([7])
+    } else {
+      // Normal behavior for subsequent selections
+      if (selectedGifts.includes(giftId) || selectedGifts.length >= 3) {
+        if (selectedGifts.includes(giftId) && selectedGifts.length >= 3) {
+          setSelectedPromo(giftId)
+        }
+        return
+      }
+      setSelectedGifts([...selectedGifts, giftId])
+    }
+  }
+
+  const shuffleArray = (array: Gift[]): Gift[] => {
+    let currentIndex = array.length,
+      randomIndex
+
+    // While there remain elements to shuffle...
+    while (currentIndex !== 0) {
+      // Pick a remaining element...
+      randomIndex = Math.floor(Math.random() * currentIndex)
+      currentIndex--
+
+      // And swap it with the current element.
+      ;[array[currentIndex], array[randomIndex]] = [
+        array[randomIndex],
+        array[currentIndex]
+      ]
+    }
+
+    return array
+  }
+
+  // Shuffle data on mount
+  useEffect(() => {
+    const shuffled = shuffleArray([...data]) // Assuming 'data' is your original array
+    setShuffledData(shuffled)
+  }, [])
+
+  useEffect(() => {
+    shuffledData.forEach((gift) => {
+      const img = new Image()
+      img.src = gift.image
+    })
+  }, [shuffledData])
 
   const isGiftSelected = (giftId: number) => selectedGifts.includes(giftId)
 
@@ -179,7 +182,7 @@ const GiftContainer = () => {
           maxWidth: '426px'
         }}
       >
-        {data.map((gift) => (
+        {shuffledData.map((gift) => (
           <Grid item key={gift.id} xs={4}>
             <Card
               onClick={() => handleSelectGift(gift.id)}
@@ -240,6 +243,7 @@ const GiftContainer = () => {
                 </Box>
               ) : null}
               <CardActionArea
+                disableRipple
                 style={{
                   height: '100%',
                   position: 'relative',
@@ -256,12 +260,12 @@ const GiftContainer = () => {
                       height: { xs: '76px', md: '98px' }
                     }}
                   >
-                    <NextImage
-                      priority={true}
+                    <img
                       src={gift.image}
-                      layout="fill"
                       alt="gift"
                       style={{
+                        width: '100%',
+                        height: '100%',
                         transform: isGiftSelected(gift.id)
                           ? 'rotateY(180deg)'
                           : 'rotateY(0deg)'
@@ -290,7 +294,11 @@ const GiftContainer = () => {
           აირჩიე
         </Button>
       ) : null}
-      <PromoModal open={modalOpen} onClose={() => setModalOpen(false)} />
+      <PromoModal
+        selectedPromo={shuffledData.find((it) => it.id === selectedPromo)}
+        open={modalOpen}
+        onClose={() => setModalOpen(false)}
+      />
     </Box>
   )
 }
