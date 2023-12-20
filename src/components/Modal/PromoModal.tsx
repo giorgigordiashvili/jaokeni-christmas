@@ -48,7 +48,9 @@ const PromoModal: React.FC<PromoModalProps> = ({
     if (modalRef.current) {
       console.log(modalRef.current)
       html2canvas(modalRef.current, {
-        allowTaint: true
+        useCORS: true, // Attempt to load images with CORS enabled
+        allowTaint: false // Prevents tainting the canvas
+        // Other options...
       }).then((canvas) => {
         // Rest of your code remains the same
         const image = canvas.toDataURL('image/png', 1.0)
