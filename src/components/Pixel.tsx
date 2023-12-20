@@ -13,7 +13,7 @@ export const FacebookPixelEvents: React.FC = () => {
     import('react-facebook-pixel')
       .then((x) => x.default)
       .then((ReactPixel) => {
-        ReactPixel.init('FACEBOOK_PIXEL_ID') //don't forget to change this
+        ReactPixel.init('691070256463566') //don't forget to change this
         ReactPixel.pageView()
       })
   }, [pathname, searchParams])
