@@ -8,7 +8,7 @@ const nextConfig = {
     }
   },
   images: {
-    domains: ['207.154.192.95'],
+    domains: ['api.jaokeni.ge'],
     remotePatterns: [
       {
         protocol: 'https',
