@@ -47,7 +47,9 @@ const PromoModal: React.FC<PromoModalProps> = ({
   const takeScreenshot = () => {
     if (modalRef.current) {
       console.log(modalRef.current)
-      html2canvas(modalRef.current).then((canvas) => {
+      html2canvas(modalRef.current, {
+        allowTaint: true
+      }).then((canvas) => {
         // Rest of your code remains the same
         const image = canvas.toDataURL('image/png', 1.0)
         let downloadLink = document.createElement('a')
@@ -107,20 +109,113 @@ const PromoModal: React.FC<PromoModalProps> = ({
     alignItems: 'center'
   }
   return (
-    <Modal ref={modalRef} open={open} onClose={onClose}>
-      <Box
-        sx={{
-          ...modalStyle,
-          width: { xs: 'calc(100vw - 32px)', md: '584px' },
-          borderRadius: '10px'
-        }}
-      >
-        <Image
-          src={selectedPromo?.image || ''}
-          alt="Promo"
-          width={isMobile ? 180 : 220}
-          height={isMobile ? 180 : 220}
-        />
+    <>
+      <Modal open={open} onClose={onClose}>
+        <Box
+          sx={{
+            ...modalStyle,
+            width: { xs: 'calc(100vw - 32px)', md: '584px' },
+            borderRadius: '10px'
+          }}
+        >
+          <Image
+            src={selectedPromo?.image || ''}
+            alt="Promo"
+            width={isMobile ? 180 : 220}
+            height={isMobile ? 180 : 220}
+          />
+          {couponCode?.length ? (
+            <Typography
+              style={{ marginBottom: '8px' }}
+              textAlign="center"
+              variant="h4"
+              fontWeight={'650'}
+            >
+              გილოცავთ!
+            </Typography>
+          ) : null}
+          <Typography
+            style={{ marginBottom: '8px' }}
+            textAlign="center"
+            variant="h6"
+            fontWeight={'650'}
+          >
+            {couponCode?.length
+              ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
+              : selectedPromo?.title}
+          </Typography>
+          {!couponCode?.length ? (
+            <Formik
+              initialValues={initialValues}
+              validationSchema={promoValidationSchema}
+              onSubmit={handleSubmit}
+            >
+              {({ isSubmitting }) => (
+                <Form
+                  style={{
+                    display: 'flex',
+                    flexDirection: 'column',
+                    gap: '12px',
+                    width: isMobile ? '252px' : '350px',
+                    marginTop: '40px'
+                  }}
+                >
+                  <Field
+                    name="firstName"
+                    as={TextField}
+                    label="სახელი"
+                    variant="outlined"
+                    required
+                  />
+                  <ErrorMessage name="firstName" component="div" />
+
+                  <Field
+                    name="lastName"
+                    as={TextField}
+                    label="გვარი"
+                    variant="outlined"
+                    required
+                  />
+                  <ErrorMessage name="lastName" component="div" />
+
+                  <Field
+                    name="phoneNumber"
+                    as={TextField}
+                    label="ტელეფონის ნომერი"
+                    variant="outlined"
+                    required
+                  />
+                  <ErrorMessage name="phoneNumber" component="div" />
+
+                  <Button
+                    type="submit"
+                    variant="contained"
+                    color="primary"
+                    style={{ marginTop: 16, alignSelf: 'center' }}
+                    disabled={isSubmitting}
+                  >
+                    მიიღე კოდი
+                  </Button>
+                </Form>
+              )}
+            </Formik>
+          ) : (
+            <>
+              <Typography variant="h4">{couponCode}</Typography>
+              <Button
+                onClick={takeScreenshot}
+                variant="contained"
+                color="primary"
+                style={{ marginTop: 16, alignSelf: 'center' }}
+              >
+                შენახვა
+              </Button>
+            </>
+          )}
+        </Box>
+      </Modal>
+      <Box ref={modalRef}>
+        <img src={selectedPromo?.image} alt="Promo" width={220} height={220} />
         {couponCode?.length ? (
           <Typography
             style={{ marginBottom: '8px' }}
@@ -141,76 +236,9 @@ const PromoModal: React.FC<PromoModalProps> = ({
             ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
             : selectedPromo?.title}
         </Typography>
-        {!couponCode?.length ? (
-          <Formik
-            initialValues={initialValues}
-            validationSchema={promoValidationSchema}
-            onSubmit={handleSubmit}
-          >
-            {({ isSubmitting }) => (
-              <Form
-                style={{
-                  display: 'flex',
-                  flexDirection: 'column',
-                  gap: '12px',
-                  width: isMobile ? '252px' : '350px',
-                  marginTop: '40px'
-                }}
-              >
-                <Field
-                  name="firstName"
-                  as={TextField}
-                  label="სახელი"
-                  variant="outlined"
-                  required
-                />
-                <ErrorMessage name="firstName" component="div" />
-
-                <Field
-                  name="lastName"
-                  as={TextField}
-                  label="გვარი"
-                  variant="outlined"
-                  required
-                />
-                <ErrorMessage name="lastName" component="div" />
-
-                <Field
-                  name="phoneNumber"
-                  as={TextField}
-                  label="ტელეფონის ნომერი"
-                  variant="outlined"
-                  required
-                />
-                <ErrorMessage name="phoneNumber" component="div" />
-
-                <Button
-                  type="submit"
-                  variant="contained"
-                  color="primary"
-                  style={{ marginTop: 16, alignSelf: 'center' }}
-                  disabled={isSubmitting}
-                >
-                  მიიღე კოდი
-                </Button>
-              </Form>
-            )}
-          </Formik>
-        ) : (
-          <>
-            <Typography variant="h4">{couponCode}</Typography>
-            <Button
-              onClick={takeScreenshot}
-              variant="contained"
-              color="primary"
-              style={{ marginTop: 16, alignSelf: 'center' }}
-            >
-              შენახვა
-            </Button>
-          </>
-        )}
+        <Typography variant="h4">{couponCode}</Typography>
       </Box>
-    </Modal>
+    </>
   )
 }
 
