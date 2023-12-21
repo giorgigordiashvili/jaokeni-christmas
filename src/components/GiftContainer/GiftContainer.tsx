@@ -192,7 +192,7 @@ const GiftContainer = ({ data }: Props) => {
         }}
       >
         {shuffledData.map((gift) => (
-          <Grid item key={gift.id}>
+          <Grid xs={4} item key={gift.id}>
             <Card
               onClick={() => handleSelectGift(gift.id)}
               style={{
