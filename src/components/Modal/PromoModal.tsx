@@ -1,4 +1,6 @@
 import { Gift } from '@/api'
+import SaveIcon from '@mui/icons-material/Save'
+import LoadingButton from '@mui/lab/LoadingButton'
 import {
   Box,
   Button,
@@ -15,7 +17,6 @@ import Image from 'next/image'
 import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
-
 function base64ToBlob(base64: string, mimeType: string) {
   const bytes = atob(base64.split(',')[1])
   const arr = new Uint8Array(bytes.length)
@@ -50,6 +51,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
   onClose,
   selectedPromo
 }) => {
+  const [loading, setLoading] = useState<boolean>(false)
   const router = useRouter()
   const [promoImage, setPromoImage] = useState<string>('')
   const [shareToFriend, setShareToFriend] = useState<boolean>(false)
@@ -67,6 +69,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
         allowTaint: false // Prevents tainting the canvas
         // Other options...
       }).then(async (canvas) => {
+        setLoading(true)
         // Rest of your code remains the same
 
         const image = canvas.toDataURL('image/png', 1.0)
@@ -81,6 +84,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
           headers: { 'Content-Type': 'multipart/form-data' }
         })
         router.push(response.data?.image)
+        setLoading(false)
 
         setShareToFriend(true)
       })
@@ -92,7 +96,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
     lastName: Yup.string().required('გვარის შეყვანა სავალდებულოა'),
     phoneNumber: Yup.string()
       .matches(
-        /^\+995\s*\d{1,3}\s*\d{1,3}\s*\d{1,3}$|^\d{1,3}\s*\d{1,3}\s*\d{1,3}$/,
+        /^(?:\+995)?\d{3}\s?\d{2}\s?\d{2}\s?\d{2}$/,
         'ტელეფონის ნომერი უნდა იყოს ვალიდური (503123456) ან (+995502123456'
       )
       .required('ტელეფონის ნომერის შეყვანა სავალდებულოა')
@@ -171,7 +175,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
               საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი
             </Typography>
           ) : (
-            <Box sx={{ backgroundColor: '#FDD106' }}>
+            <Box>
               <Typography
                 style={{ marginBottom: '8px' }}
                 textAlign="center"
@@ -240,14 +244,16 @@ const PromoModal: React.FC<PromoModalProps> = ({
           ) : (
             <>
               <Typography variant="h4">{couponCode}</Typography>
-              <Button
-                onClick={takeScreenshot}
-                variant="contained"
-                color="primary"
+              <LoadingButton
                 style={{ marginTop: 16, alignSelf: 'center' }}
+                loading={loading}
+                variant="contained"
+                loadingPosition="start"
+                onClick={takeScreenshot}
+                startIcon={<SaveIcon />}
               >
                 შენახვა
-              </Button>
+              </LoadingButton>
             </>
           )}
         </Box>

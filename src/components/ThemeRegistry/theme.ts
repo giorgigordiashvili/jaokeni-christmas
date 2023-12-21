@@ -53,6 +53,7 @@ const theme = createTheme({
     MuiCssBaseline: {
       styleOverrides: GlobalStyle
     },
+
     MuiButton: {
       styleOverrides: {
         root: {
