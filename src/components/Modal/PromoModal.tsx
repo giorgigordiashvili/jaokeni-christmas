@@ -15,6 +15,17 @@ import Image from 'next/image'
 import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
 
+function base64ToBlob(base64: string, mimeType: string) {
+  const bytes = atob(base64.split(',')[1])
+  const arr = new Uint8Array(bytes.length)
+
+  for (let i = 0; i < bytes.length; i++) {
+    arr[i] = bytes.charCodeAt(i)
+  }
+
+  return new Blob([arr], { type: mimeType })
+}
+
 interface FormValues {
   firstName: string
   lastName: string
@@ -38,6 +49,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
   onClose,
   selectedPromo
 }) => {
+  const [promoImage, setPromoImage] = useState<string>('')
   const [shareToFriend, setShareToFriend] = useState<boolean>(false)
   const modalRef = useRef(null)
 
@@ -52,13 +64,22 @@ const PromoModal: React.FC<PromoModalProps> = ({
         useCORS: true, // Attempt to load images with CORS enabled
         allowTaint: false // Prevents tainting the canvas
         // Other options...
-      }).then((canvas) => {
+      }).then(async (canvas) => {
         // Rest of your code remains the same
+
         const image = canvas.toDataURL('image/png', 1.0)
-        let downloadLink = document.createElement('a')
-        downloadLink.href = image
-        downloadLink.download = 'screenshot.png'
-        downloadLink.click()
+        const file = base64ToBlob(image, 'image/jpeg')
+
+        const formData = new FormData()
+        formData.append('image', file, 'jaokeni_coupon.png')
+        const response = await axios({
+          method: 'post',
+          url: 'https://api.jaokeni.ge/api/upload-image',
+          data: formData,
+          headers: { 'Content-Type': 'multipart/form-data' }
+        })
+        window.open(response.data?.image)
+
         setShareToFriend(true)
       })
     }
