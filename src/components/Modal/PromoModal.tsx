@@ -12,6 +12,7 @@ import axios from 'axios'
 import { ErrorMessage, Field, Form, Formik, FormikHelpers } from 'formik'
 import html2canvas from 'html2canvas'
 import Image from 'next/image'
+import { useRouter } from 'next/navigation'
 import React, { useRef, useState } from 'react'
 import * as Yup from 'yup'
 
@@ -49,6 +50,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
   onClose,
   selectedPromo
 }) => {
+  const router = useRouter()
   const [promoImage, setPromoImage] = useState<string>('')
   const [shareToFriend, setShareToFriend] = useState<boolean>(false)
   const modalRef = useRef(null)
@@ -78,7 +80,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
           data: formData,
           headers: { 'Content-Type': 'multipart/form-data' }
         })
-        window.open(response.data?.image)
+        router.push(response.data?.image)
 
         setShareToFriend(true)
       })
@@ -90,7 +92,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
     lastName: Yup.string().required('გვარის შეყვანა სავალდებულოა'),
     phoneNumber: Yup.string()
       .matches(
-        /(^\+995\d{9}$)|(^\d{9}$)/,
+        /^\+995\s*\d{1,3}\s*\d{1,3}\s*\d{1,3}$|^\d{1,3}\s*\d{1,3}\s*\d{1,3}$/,
         'ტელეფონის ნომერი უნდა იყოს ვალიდური (503123456) ან (+995502123456'
       )
       .required('ტელეფონის ნომერის შეყვანა სავალდებულოა')
@@ -107,7 +109,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
           name: values.firstName,
           lastname: values.lastName,
           gift_id: selectedPromo?.id,
-          number: values.phoneNumber
+          number: values.phoneNumber.replaceAll(' ', '')
         }
       )
 
@@ -253,7 +255,6 @@ const PromoModal: React.FC<PromoModalProps> = ({
       <Box
         ref={modalRef}
         style={{
-          backgroundColor: 'yellow',
           padding: 20,
           position: 'absolute',
           bottom: '4000px',
