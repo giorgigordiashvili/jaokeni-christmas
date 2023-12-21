@@ -1,5 +1,6 @@
 'use client'
-import { Gift } from '@/api'
+import { Gift, fetchGifts } from '@/api'
+import CachedIcon from '@mui/icons-material/Cached'
 import {
   Box,
   Button,
@@ -25,43 +26,15 @@ const GiftContainer = ({ data }: Props) => {
   const theme = useTheme()
   const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
-  const swapGifts = (clickedGiftId: number) => {
-    // Find the index of the gift with id 7
-    const id7Index = shuffledData.findIndex((gift) => gift.id === 7)
-    // Find the index of the clicked gift
-    const clickedIndex = shuffledData.findIndex(
-      (gift) => gift.id === clickedGiftId
-    )
-
-    // Swap the gifts
-    ;[shuffledData[id7Index], shuffledData[clickedIndex]] = [
-      shuffledData[clickedIndex],
-      shuffledData[id7Index]
-    ]
-
-    // Update the state with the new order
-    setShuffledData([...shuffledData])
-  }
-
   const handleSelectGift = (giftId: number) => {
-    if (selectedGifts.length === 2 && !selectedPromo) {
-      setSelectedPromo(7)
-    }
-    // Check if no gifts have been selected yet
-    if (selectedGifts.length === 0) {
-      swapGifts(giftId)
-
-      setSelectedGifts([7])
-    } else {
-      // Normal behavior for subsequent selections
-      if (selectedGifts.includes(giftId) || selectedGifts.length >= 3) {
-        if (selectedGifts.includes(giftId) && selectedGifts.length >= 3) {
-          setSelectedPromo(giftId)
-        }
-        return
+    // Normal behavior for subsequent selections
+    if (selectedGifts.includes(giftId) || selectedGifts.length >= 3) {
+      if (selectedGifts.includes(giftId) && selectedGifts.length >= 3) {
+        setSelectedPromo(giftId)
       }
-      setSelectedGifts([...selectedGifts, giftId])
+      return
     }
+    setSelectedGifts([...selectedGifts, giftId])
   }
 
   const shuffleArray = (array: Gift[]): Gift[] => {
@@ -130,16 +103,21 @@ const GiftContainer = ({ data }: Props) => {
               }
             }}
           >
-            აირჩიე
+            აირჩიე ერთ-ერთი
           </Typography>
-          <Typography
-            variant="h1"
-            sx={{
-              marginTop: 0
+          <Button
+            onClick={async () => {
+              setSelectedGifts([])
+              setSelectedPromo(null)
+              const { data } = await fetchGifts()
+              const shuffled = shuffleArray([...data]) // Assuming 'data' is your original array
+              setShuffledData(shuffled)
             }}
+            sx={{ backgroundColor: 'transparent' }}
+            variant="text"
           >
-            ერთ-ერთი
-          </Typography>
+            <CachedIcon fontSize="large" />
+          </Button>
         </>
       ) : (
         <>
@@ -166,20 +144,27 @@ const GiftContainer = ({ data }: Props) => {
       )}
 
       {selectedPromo ? (
-        <>
-          <Typography
-            fontWeight="750"
-            variant="subtitle1"
+        <Box
+          sx={{
+            height: '96px',
+            display: 'flex',
+            justifyContent: 'center',
+            alignItems: 'center'
+          }}
+        >
+          <Box
             sx={{
-              marginTop: {
-                xs: '8px',
-                md: '24px'
-              }
+              backgroundColor: '#FDD106',
+              padding: 1,
+
+              borderRadius: 2
             }}
           >
-            {data.find((it) => it.id === selectedPromo)?.title}
-          </Typography>
-        </>
+            <Typography fontWeight="750" variant="subtitle1">
+              {data.find((it) => it.id === selectedPromo)?.title}
+            </Typography>
+          </Box>
+        </Box>
       ) : selectedGifts.length < 3 ? (
         <Typography
           variant="subtitle1"
@@ -193,15 +178,13 @@ const GiftContainer = ({ data }: Props) => {
           გახსენით ჯაოკენის 3 ყუთი
         </Typography>
       ) : null}
+
       <Grid
         container
         justifyContent="center"
         alignItems="center"
         sx={{
-          marginTop: {
-            xs: '32px',
-            md: '40px'
-          },
+          gridTemplateColumns: '1fr 1fr 1fr',
           maxWidth: {
             xs: '100%',
             md: '700px'
@@ -209,7 +192,7 @@ const GiftContainer = ({ data }: Props) => {
         }}
       >
         {shuffledData.map((gift) => (
-          <Grid xs={4} item key={gift.id}>
+          <Grid item key={gift.id}>
             <Card
               onClick={() => handleSelectGift(gift.id)}
               style={{
@@ -299,7 +282,7 @@ const GiftContainer = ({ data }: Props) => {
                     />
                   </Box>
                 ) : (
-                  <NextImage src="/gift.png" layout="fill" alt="gift" />
+                  <NextImage src="/gift-golden.png" layout="fill" alt="gift" />
                 )}
               </CardActionArea>
             </Card>

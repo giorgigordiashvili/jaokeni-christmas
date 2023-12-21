@@ -138,16 +138,27 @@ const PromoModal: React.FC<PromoModalProps> = ({
               გილოცავთ!
             </Typography>
           ) : null}
-          <Typography
-            style={{ marginBottom: '8px' }}
-            textAlign="center"
-            variant="h6"
-            fontWeight={'650'}
-          >
-            {couponCode?.length
-              ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
-              : selectedPromo?.title}
-          </Typography>
+          {couponCode?.length ? (
+            <Typography
+              style={{ marginBottom: '8px' }}
+              textAlign="center"
+              variant="h6"
+              fontWeight={'650'}
+            >
+              საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი
+            </Typography>
+          ) : (
+            <Box sx={{ backgroundColor: '#FDD106' }}>
+              <Typography
+                style={{ marginBottom: '8px' }}
+                textAlign="center"
+                variant="h6"
+                fontWeight={'650'}
+              >
+                {selectedPromo?.title}
+              </Typography>
+            </Box>
+          )}
           {!couponCode?.length ? (
             <Formik
               initialValues={initialValues}

@@ -28,6 +28,13 @@ export default async function Home() {
           ხშირად დასმული კითხვები
         </Typography>
         <Box sx={{ marginTop: { xs: '36px', md: '80px' } }}>
+          <ResponsiveAccordion
+            title={'რა საჩუქრები შეიძლება მოვიგო?'}
+            answer={`${data?.map((gift) => `<p>${gift.title}</p>`)}`.replaceAll(
+              ',',
+              ''
+            )}
+          />
           {faqData?.map((item, ind) => (
             <ResponsiveAccordion
               key={ind.toString()}
