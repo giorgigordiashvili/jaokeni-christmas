@@ -30,10 +30,9 @@ export default async function Home() {
         <Box sx={{ marginTop: { xs: '36px', md: '80px' } }}>
           <ResponsiveAccordion
             title={'რა საჩუქრები შეიძლება მოვიგო?'}
-            answer={`${data?.map((gift) => `<p>${gift.title}</p>`)}`.replaceAll(
-              ',',
-              ''
-            )}
+            answer={`${data?.map(
+              (gift, index) => `<p>${index+1}. ${gift.title}</p>`
+            )}`.replaceAll(',', '')}
           />
           {faqData?.map((item, ind) => (
             <ResponsiveAccordion

@@ -268,7 +268,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
         }}
       >
         <img
-          src={`/${selectedPromo?.id}.png`}
+          src={`/${selectedPromo?.id}.webp`}
           alt="Promo"
           width={440}
           height={440}
