@@ -13,6 +13,26 @@ import { useEffect, useState } from 'react'
 import PromoModal from '../Modal/PromoModal'
 const { default: NextImage } = require('next/image')
 
+const shuffleArray = (array: Gift[]): Gift[] => {
+  let currentIndex = array.length,
+    randomIndex
+
+  // While there remain elements to shuffle...
+  while (currentIndex !== 0) {
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex)
+    currentIndex--
+
+    // And swap it with the current element.
+    ;[array[currentIndex], array[randomIndex]] = [
+      array[randomIndex],
+      array[currentIndex]
+    ]
+  }
+
+  return array
+}
+
 type Props = { data: Gift[] }
 const GiftContainer = ({ data }: Props) => {
   const [shuffledData, setShuffledData] = useState<Gift[]>(data)
