@@ -286,6 +286,23 @@ const GiftContainer = ({ data }: Props) => {
           </Grid>
         ))}
       </Grid>
+      <Box style={{ width: '0px', height: '0px' }}>
+        {shuffledData.map((gift, index) => (
+          <NextImage
+            key={index.toString()}
+            src={`/${gift.id}.webp`}
+            lazy
+            alt="gift"
+            fill
+            sizes="100%"
+            style={{
+              transform: isGiftSelected(gift.id)
+                ? 'rotateY(180deg)'
+                : 'rotateY(0deg)'
+            }}
+          />
+        ))}
+      </Box>
       {selectedGifts.length >= 3 ? (
         <Button
           sx={{
