@@ -286,7 +286,14 @@ const GiftContainer = ({ data }: Props) => {
           </Grid>
         ))}
       </Grid>
-      <Box style={{ width: '0px', height: '0px' }}>
+      <Box
+        style={{
+          width: '0px',
+          height: '0px',
+          position: 'relative',
+          opacity: 0
+        }}
+      >
         {shuffledData.map((gift, index) => (
           <NextImage
             key={index.toString()}
