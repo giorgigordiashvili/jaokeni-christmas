@@ -261,6 +261,7 @@ const GiftContainer = ({ data }: Props) => {
                     }}
                   >
                     <NextImage
+                      key={gift.id}
                       src={`/${gift.id}.webp`}
                       lazy
                       alt="gift"
@@ -296,7 +297,7 @@ const GiftContainer = ({ data }: Props) => {
       >
         {shuffledData.map((gift, index) => (
           <NextImage
-            key={index.toString()}
+            key={gift.id}
             src={`/${gift.id}.webp`}
             lazy
             alt="gift"
