@@ -78,8 +78,8 @@ const GiftContainer = ({ data }: Props) => {
       p={2}
       sx={{
         backgroundImage: {
-          xs: 'url(./giftbg-mobile.png)',
-          md: 'url(./giftbg-desktop.png)'
+          xs: 'url(./giftbg-mobile.webp)',
+          md: 'url(./giftbg-desktop.webp)'
         }
       }}
       style={{
@@ -251,7 +251,7 @@ const GiftContainer = ({ data }: Props) => {
                   }}
                 >
                   <NextImage
-                    src="/checkbox.png"
+                    src="/checkbox.webp"
                     layout="fill"
                     alt="Test"
                     style={{ objectFit: 'contain' }}
@@ -289,7 +289,7 @@ const GiftContainer = ({ data }: Props) => {
                     />
                   </Box>
                 ) : (
-                  <NextImage src="/gift-golden.png" layout="fill" alt="gift" />
+                  <NextImage src="/gift-golden.webp" layout="fill" alt="gift" />
                 )}
               </CardActionArea>
             </Card>

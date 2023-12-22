@@ -264,7 +264,7 @@ const PromoModal: React.FC<PromoModalProps> = ({
           padding: 20,
           position: 'absolute',
           bottom: '4000px',
-          backgroundImage: 'url(/giftbg-mobile.png)'
+          backgroundImage: 'url(/giftbg-mobile.webp)'
         }}
       >
         <img
