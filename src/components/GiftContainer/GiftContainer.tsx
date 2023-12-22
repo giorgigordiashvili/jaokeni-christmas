@@ -9,7 +9,7 @@ import {
   Grid,
   Typography
 } from '@mui/material'
-import { useEffect, useState } from 'react'
+import { useState } from 'react'
 import PromoModal from '../Modal/PromoModal'
 const { default: NextImage } = require('next/image')
 
@@ -52,13 +52,6 @@ const GiftContainer = ({ data }: Props) => {
     }
     setSelectedGifts([...selectedGifts, giftId])
   }
-
-  useEffect(() => {
-    shuffledData.forEach((gift) => {
-      const img = new Image()
-      img.src = gift.image
-    })
-  }, [shuffledData])
 
   const isGiftSelected = (giftId: number) => selectedGifts.includes(giftId)
 
@@ -267,12 +260,13 @@ const GiftContainer = ({ data }: Props) => {
                       height: { xs: '100%', md: '100%' }
                     }}
                   >
-                    <img
-                      src={gift.image}
+                    <NextImage
+                      src={`/${gift.id}.webp`}
+                      lazy
                       alt="gift"
+                      fill
+                      sizes="100%"
                       style={{
-                        width: '100%',
-                        height: '100%',
                         transform: isGiftSelected(gift.id)
                           ? 'rotateY(180deg)'
                           : 'rotateY(0deg)'

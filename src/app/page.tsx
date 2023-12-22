@@ -1,9 +1,25 @@
 import { Gift, fetchFAQs, fetchGifts } from '@/api'
-import GiftContainer from '@/components/GiftContainer/GiftContainer'
-import Header from '@/components/Header/Header'
-import ResponsiveAccordion from '@/components/ResponsiveAccordion/ResponsiveAccordion'
 import { Typography } from '@mui/material'
 import Box from '@mui/material/Box'
+import dynamic from 'next/dynamic'
+
+const DynamicHeader = dynamic(() => import('@/components/Header/Header'), {
+  loading: () => <p>Loading...</p>
+})
+
+const DynamicGiftContainer = dynamic(
+  () => import('@/components/GiftContainer/GiftContainer'),
+  {
+    loading: () => <p>Loading...</p>
+  }
+)
+
+const DynamicResponsiveAccordion = dynamic(
+  () => import('@/components/ResponsiveAccordion/ResponsiveAccordion'),
+  {
+    loading: () => <p>Loading...</p>
+  }
+)
 
 export const revalidate = 60
 
@@ -35,8 +51,8 @@ export default async function Home() {
 
   return (
     <Box style={{}}>
-      <Header></Header>
-      <GiftContainer data={shuffled} />
+      <DynamicHeader />
+      <DynamicGiftContainer data={shuffled} />
       <Box
         sx={{
           padding: { xs: '24px 16px', md: '60px' },
@@ -51,14 +67,14 @@ export default async function Home() {
           ხშირად დასმული კითხვები
         </Typography>
         <Box sx={{ marginTop: { xs: '36px', md: '80px' } }}>
-          <ResponsiveAccordion
+          <DynamicResponsiveAccordion
             title={'რა საჩუქრები შეიძლება მოვიგო?'}
             answer={`${data?.map(
               (gift, index) => `<p>${index + 1}. ${gift.title}</p>`
             )}`.replaceAll(',', '')}
           />
           {faqData?.map((item, ind) => (
-            <ResponsiveAccordion
+            <DynamicResponsiveAccordion
               key={ind.toString()}
               title={item.question}
               answer={item.answer}
