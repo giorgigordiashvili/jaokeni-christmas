@@ -144,7 +144,7 @@ const GiftContainer = ({ data }: Props) => {
             }}
           >
             <Typography fontWeight="750" variant="subtitle1">
-              {data.find((it) => it.id === selectedPromo)?.title}
+              {shuffledData.find((it) => it.id === selectedPromo)?.title}
             </Typography>
           </Box>
         </Box>
