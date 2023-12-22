@@ -4,47 +4,40 @@ import {
   Accordion,
   AccordionDetails,
   AccordionSummary,
-  Typography,
-  useMediaQuery,
-  useTheme
+  Typography
 } from '@mui/material'
 
 type Props = {
   title: string
   answer: string
 }
+
+const titleStyle = {
+  color: '#FFF',
+  fontFamily: 'Helvetica Neue',
+  fontStyle: 'normal',
+  textTransform: 'uppercase'
+}
+
+const answerStyle = {
+  color: '#FFF',
+  fontFamily: 'Helvetica Neue',
+  fontSize: {
+    sx: '12px',
+    md: '16px'
+  },
+  fontStyle: 'normal',
+  fontWeight: {
+    sx: '300',
+    md: '500'
+  },
+  lineHeight: {
+    sx: '18px',
+    md: '28px'
+  }
+}
+
 const ResponsiveAccordion = ({ title, answer }: Props) => {
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
-
-  const titleStyle = {
-    color: '#FFF',
-    fontFamily: 'Helvetica Neue',
-    fontSize: isMobile ? '14px' : '20px',
-    fontStyle: 'normal',
-    fontWeight: isMobile ? 500 : 700,
-    lineHeight: isMobile ? '20px' : '28px', // 142.857% for mobile, 140% for desktop
-    textTransform: 'uppercase'
-  }
-
-  const answerStyle = {
-    color: '#FFF',
-    fontFamily: 'Helvetica Neue',
-    fontSize: {
-      sx: '12px',
-      md: '16px'
-    },
-    fontStyle: 'normal',
-    fontWeight: {
-      sx: '300',
-      md: '500'
-    },
-    lineHeight: {
-      sx: '18px',
-      md: '28px'
-    }
-  }
-
   return (
     <Accordion
       disableGutters
@@ -60,10 +53,20 @@ const ResponsiveAccordion = ({ title, answer }: Props) => {
         aria-controls="panel-content"
         id="panel-header"
       >
-        <Typography sx={titleStyle}>{title}</Typography>
+        <Typography
+          sx={{
+            ...titleStyle,
+            fontWeight: { xs: 500, md: 700 },
+            lineHeight: { xs: '20px', md: '28px' },
+            fontSize: { xs: '14px', md: '20px' }
+          }}
+        >
+          {title}
+        </Typography>
       </AccordionSummary>
       <AccordionDetails sx={{ padding: 0, marginBottom: '24px' }}>
         <Typography
+          component="div"
           sx={answerStyle}
           dangerouslySetInnerHTML={{
             __html: answer

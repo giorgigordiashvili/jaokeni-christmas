@@ -7,9 +7,7 @@ import {
   Card,
   CardActionArea,
   Grid,
-  Typography,
-  useMediaQuery,
-  useTheme
+  Typography
 } from '@mui/material'
 import { useEffect, useState } from 'react'
 import PromoModal from '../Modal/PromoModal'
@@ -17,14 +15,12 @@ const { default: NextImage } = require('next/image')
 
 type Props = { data: Gift[] }
 const GiftContainer = ({ data }: Props) => {
-  const [shuffledData, setShuffledData] = useState<Gift[]>([])
+  const [shuffledData, setShuffledData] = useState<Gift[]>(data)
 
   const [selectedPromo, setSelectedPromo] = useState<null | number>(null)
   const [modalOpen, setModalOpen] = useState(false)
 
   const [selectedGifts, setSelectedGifts] = useState<number[]>([])
-  const theme = useTheme()
-  const isMobile = useMediaQuery(theme.breakpoints.down('sm'))
 
   const handleSelectGift = (giftId: number) => {
     // Normal behavior for subsequent selections
@@ -36,32 +32,6 @@ const GiftContainer = ({ data }: Props) => {
     }
     setSelectedGifts([...selectedGifts, giftId])
   }
-
-  const shuffleArray = (array: Gift[]): Gift[] => {
-    let currentIndex = array.length,
-      randomIndex
-
-    // While there remain elements to shuffle...
-    while (currentIndex !== 0) {
-      // Pick a remaining element...
-      randomIndex = Math.floor(Math.random() * currentIndex)
-      currentIndex--
-
-      // And swap it with the current element.
-      ;[array[currentIndex], array[randomIndex]] = [
-        array[randomIndex],
-        array[currentIndex]
-      ]
-    }
-
-    return array
-  }
-
-  // Shuffle data on mount
-  useEffect(() => {
-    const shuffled = shuffleArray([...data]) // Assuming 'data' is your original array
-    setShuffledData(shuffled)
-  }, [])
 
   useEffect(() => {
     shuffledData.forEach((gift) => {
@@ -252,8 +222,9 @@ const GiftContainer = ({ data }: Props) => {
                 >
                   <NextImage
                     src="/checkbox.webp"
-                    layout="fill"
+                    fill
                     alt="Test"
+                    sizes="100%"
                     style={{ objectFit: 'contain' }}
                   />
                 </Box>
@@ -289,7 +260,12 @@ const GiftContainer = ({ data }: Props) => {
                     />
                   </Box>
                 ) : (
-                  <NextImage src="/gift-golden.webp" layout="fill" alt="gift" />
+                  <NextImage
+                    src="/gift-golden.webp"
+                    sizes="100%"
+                    fill
+                    alt="gift"
+                  />
                 )}
               </CardActionArea>
             </Card>

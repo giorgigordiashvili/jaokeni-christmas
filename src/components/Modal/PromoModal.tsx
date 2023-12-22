@@ -258,44 +258,46 @@ const PromoModal: React.FC<PromoModalProps> = ({
           )}
         </Box>
       </Modal>
-      <Box
-        ref={modalRef}
-        style={{
-          padding: 20,
-          position: 'absolute',
-          bottom: '4000px',
-          backgroundImage: 'url(/giftbg-mobile.webp)'
-        }}
-      >
-        <img
-          src={`/${selectedPromo?.id}.webp`}
-          alt="Promo"
-          width={440}
-          height={440}
-          style={{ objectFit: 'contain' }}
-        />
-        {couponCode?.length ? (
+      {selectedPromo ? (
+        <Box
+          ref={modalRef}
+          style={{
+            padding: 20,
+            position: 'absolute',
+            bottom: '4000px',
+            backgroundImage: 'url(/giftbg-mobile.webp)'
+          }}
+        >
+          <img
+            src={`/${selectedPromo?.id}.webp`}
+            alt="Promo"
+            width={440}
+            height={440}
+            style={{ objectFit: 'contain' }}
+          />
+          {couponCode?.length ? (
+            <Typography
+              style={{ marginBottom: '8px' }}
+              textAlign="center"
+              variant="h4"
+              fontWeight={'650'}
+            >
+              გილოცავთ!
+            </Typography>
+          ) : null}
           <Typography
             style={{ marginBottom: '8px' }}
             textAlign="center"
-            variant="h4"
+            variant="h6"
             fontWeight={'650'}
           >
-            გილოცავთ!
+            {couponCode?.length
+              ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
+              : selectedPromo?.title}
           </Typography>
-        ) : null}
-        <Typography
-          style={{ marginBottom: '8px' }}
-          textAlign="center"
-          variant="h6"
-          fontWeight={'650'}
-        >
-          {couponCode?.length
-            ? 'საჩუქრის მისაღებად შეინახეთ ვაუჩერის კოდი'
-            : selectedPromo?.title}
-        </Typography>
-        <Typography variant="h4">{couponCode}</Typography>
-      </Box>
+          <Typography variant="h4">{couponCode}</Typography>
+        </Box>
+      ) : null}
     </>
   )
 }
