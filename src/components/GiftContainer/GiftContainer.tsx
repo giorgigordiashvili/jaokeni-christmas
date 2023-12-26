@@ -40,20 +40,9 @@ const GiftContainer = ({ data }: Props) => {
   const [selectedPromo, setSelectedPromo] = useState<null | number>(null)
   const [modalOpen, setModalOpen] = useState(false)
 
-  const [selectedGifts, setSelectedGifts] = useState<number[]>([])
-
   const handleSelectGift = (giftId: number) => {
-    // Normal behavior for subsequent selections
-    if (selectedGifts.includes(giftId) || selectedGifts.length >= 3) {
-      if (selectedGifts.includes(giftId) && selectedGifts.length >= 3) {
-        setSelectedPromo(giftId)
-      }
-      return
-    }
-    setSelectedGifts([...selectedGifts, giftId])
+    setSelectedPromo(giftId)
   }
-
-  const isGiftSelected = (giftId: number) => selectedGifts.includes(giftId)
 
   return (
     <Box
@@ -75,56 +64,31 @@ const GiftContainer = ({ data }: Props) => {
         paddingBottom: '140px'
       }}
     >
-      {selectedGifts.length === 3 ? (
-        <>
-          <Typography
-            variant="h1"
-            sx={{
-              marginTop: {
-                xs: '16px',
-                md: '40px'
-              }
-            }}
-          >
-            აირჩიე ერთ-ერთი
-          </Typography>
-          <Button
-            onClick={async () => {
-              setSelectedGifts([])
-              setSelectedPromo(null)
-              const { data } = await fetchGifts()
-              const shuffled = shuffleArray([...data]) // Assuming 'data' is your original array
-              setShuffledData(shuffled)
-            }}
-            sx={{ backgroundColor: 'transparent' }}
-            variant="text"
-          >
-            <CachedIcon fontSize="large" />
-          </Button>
-        </>
-      ) : (
-        <>
-          <Typography
-            variant="h1"
-            sx={{
-              marginTop: {
-                xs: '16px',
-                md: '40px'
-              }
-            }}
-          >
-            საახალწლო
-          </Typography>
-          <Typography
-            variant="h1"
-            sx={{
-              marginTop: 0
-            }}
-          >
-            საჩუქრები ყველასთვის
-          </Typography>
-        </>
-      )}
+      <>
+        <Typography
+          variant="h1"
+          sx={{
+            marginTop: {
+              xs: '16px',
+              md: '40px'
+            }
+          }}
+        >
+          აირჩიე ერთ-ერთი
+        </Typography>
+        <Button
+          onClick={async () => {
+            setSelectedPromo(null)
+            const { data } = await fetchGifts()
+            const shuffled = shuffleArray([...data]) // Assuming 'data' is your original array
+            setShuffledData(shuffled)
+          }}
+          sx={{ backgroundColor: 'transparent' }}
+          variant="text"
+        >
+          <CachedIcon fontSize="large" />
+        </Button>
+      </>
 
       {selectedPromo ? (
         <Box
@@ -148,18 +112,6 @@ const GiftContainer = ({ data }: Props) => {
             </Typography>
           </Box>
         </Box>
-      ) : selectedGifts.length < 3 ? (
-        <Typography
-          variant="subtitle1"
-          sx={{
-            marginTop: {
-              xs: '8px',
-              md: '24px'
-            }
-          }}
-        >
-          გახსენით ჯაოკენის 3 ყუთი
-        </Typography>
       ) : null}
 
       <Grid
@@ -187,17 +139,9 @@ const GiftContainer = ({ data }: Props) => {
               onClick={() => handleSelectGift(gift.id)}
               style={{
                 position: 'relative',
-                filter:
-                  selectedGifts.length >= 3 && !isGiftSelected(gift.id)
-                    ? 'blur(4px)'
-                    : 'none',
-                opacity:
-                  selectedGifts.length >= 3 && !isGiftSelected(gift.id)
-                    ? 0.3
-                    : 1,
-                transform: isGiftSelected(gift.id)
-                  ? 'rotateY(180deg)'
-                  : 'rotateY(0deg)',
+                filter: 'none',
+                opacity: 1,
+                transform: 'rotateY(0deg)',
                 transition: 'transform 0.6s, opacity 0.3s',
                 border:
                   selectedPromo === gift.id
@@ -228,9 +172,7 @@ const GiftContainer = ({ data }: Props) => {
                     },
                     position: 'absolute',
                     zIndex: 5,
-                    transform: isGiftSelected(gift.id)
-                      ? 'rotateY(180deg)'
-                      : 'rotateY(0deg)'
+                    transform: 'rotateY(0deg)'
                   }}
                 >
                   <NextImage
@@ -252,36 +194,25 @@ const GiftContainer = ({ data }: Props) => {
                   justifyContent: 'center'
                 }}
               >
-                {isGiftSelected(gift.id) ? (
-                  <Box
-                    sx={{
-                      position: 'relative',
-                      width: { xs: '100%', md: '100%' },
-                      height: { xs: '100%', md: '100%' }
-                    }}
-                  >
-                    <NextImage
-                      key={gift.id}
-                      src={`/${gift.id}.webp`}
-                      lazy
-                      alt="gift"
-                      fill
-                      sizes="100%"
-                      style={{
-                        transform: isGiftSelected(gift.id)
-                          ? 'rotateY(180deg)'
-                          : 'rotateY(0deg)'
-                      }}
-                    />
-                  </Box>
-                ) : (
+                <Box
+                  sx={{
+                    position: 'relative',
+                    width: { xs: '100%', md: '100%' },
+                    height: { xs: '100%', md: '100%' }
+                  }}
+                >
                   <NextImage
-                    src="/gift-golden.webp"
-                    sizes="100%"
-                    fill
+                    key={gift.id}
+                    src={`/${gift.id}.webp`}
+                    lazy
                     alt="gift"
+                    fill
+                    sizes="100%"
+                    style={{
+                      transform: 'rotateY(0deg)'
+                    }}
                   />
-                )}
+                </Box>
               </CardActionArea>
             </Card>
           </Grid>
@@ -303,28 +234,22 @@ const GiftContainer = ({ data }: Props) => {
             alt="gift"
             fill
             sizes="100%"
-            style={{
-              transform: isGiftSelected(gift.id)
-                ? 'rotateY(180deg)'
-                : 'rotateY(0deg)'
-            }}
           />
         ))}
       </Box>
-      {selectedGifts.length >= 3 ? (
-        <Button
-          sx={{
-            marginTop: {
-              xs: '30px',
-              md: '60px'
-            }
-          }}
-          onClick={() => setModalOpen(true)}
-          disabled={!selectedPromo}
-        >
-          აირჩიე
-        </Button>
-      ) : null}
+
+      <Button
+        sx={{
+          marginTop: {
+            xs: '30px',
+            md: '60px'
+          }
+        }}
+        onClick={() => setModalOpen(true)}
+        disabled={!selectedPromo}
+      >
+        აირჩიე
+      </Button>
       <PromoModal
         selectedPromo={shuffledData.find((it) => it.id === selectedPromo)}
         open={modalOpen}
